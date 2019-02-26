@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template, session, bcrypt
+from flask_debugtoolbar import DebugToolbarExtension
 
 from models import db, connect_db, Cupcake
 
@@ -8,4 +9,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = "I'LL NEVER TELL!!"
 
 connect_db(app)
+# db.create_all()
+
+debug = DebugToolbarExtension(app)
+
 
