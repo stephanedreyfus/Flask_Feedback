@@ -14,11 +14,13 @@ connect_db(app)
 
 debug = DebugToolbarExtension(app)
 
+
 @app.route('/')
 def redirect_to_register():
     """ Redirects client to register """
 
     return redirect('/register')
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def show_or_submit_register_form():
