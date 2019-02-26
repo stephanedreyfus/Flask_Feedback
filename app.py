@@ -34,6 +34,7 @@ def show_or_submit_register_form():
         last_name = form.last_name.data
 
         # BONUS: we can check to see if this login already exists
+        # form.username.errors = ['Username already exists!]
 
         user = User.register(username=username,
                              password=password,
@@ -48,6 +49,25 @@ def show_or_submit_register_form():
         return redirect('/secret')
 
     else:
-
         return render_template('register.html', form=form)
 
+
+@app.route('/login', methods=['GET', 'POST'])
+def user_login():
+
+    form = LoginForm()
+
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+
+        user = User.authenticate(username, password)
+
+        if user:
+            session['username'] = user.username
+            return redirect('/secret')
+        else:
+            form.username.errors = ['Incorrect username/password']
+
+    else:
+        return render_template("login.html", form=form)
