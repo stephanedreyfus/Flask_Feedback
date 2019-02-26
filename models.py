@@ -4,11 +4,13 @@ from flask_bcrypt import Bcrypt
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 
+
 def connect_db(app):
     """Connect to database."""
 
     db.app = app
     db.init_app(app)
+
 
 class User(db.Model):
     ''' Creates user, takes in password, hashes for storage
@@ -42,3 +44,14 @@ class User(db.Model):
                    first_name=first_name,
                    last_name=last_name,
                    )
+
+    @classmethod
+    def authenticate(cls, username, password):
+        """ Test to see if user login and password are correct. """
+
+        u = User.query.filter_by(username=username).first()
+
+        if u and bcrypt.check_password_hash(u.password, password):
+            return u
+        else:
+            return False
