@@ -55,3 +55,22 @@ class User(db.Model):
             return u
         else:
             return False
+
+
+class Feedback(db.Model):
+    ''' Creates feedback table, foreign key of username. '''
+
+    __tablename__ = "feedbacks"
+
+    users = db.relationship('User', backref='feedback')
+
+    id = db.Column(db.Integer, primary_key=True,
+                   autoincrement=True)
+
+    title = db.Column(db.String(100),
+                      nullable=False)
+
+    content = db.Column(db.Text, nullable=False)
+
+    username = db.Column(db.String, db.ForeignKey('users.username',
+                         nullable=False))

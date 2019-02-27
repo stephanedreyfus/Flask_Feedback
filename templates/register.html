@@ -4,6 +4,18 @@
 Register
 {% endblock %}
 
+{% block errors %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+{% endblock %}
+
 {% block content %}
     <h1>Register a New User!</h1>
     <form method="POST">
