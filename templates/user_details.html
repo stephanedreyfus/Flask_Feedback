@@ -12,6 +12,14 @@ Detail Page for {{ user.username }}
         <li>First Name: {{ user.first_name }}</li>
         <li>Last Name: {{ user.last_name }}</li>
     </ul>
+    <ul>
+        {% for feedback in feedback %}
+            <li>{{ feedback }} <a href="/feedback/{{ feedback.id }}/update">Edit</a>
+            <form action="/feedback/{{ feedback.id }}/delete" method="POST">
+                <button type="submit">Delete</button></li>
+            </form>
+        {% endfor %}
+    </ul>
     <form action="/logout" method="GET">
         <button class="btn btn-danger" type="submit">Logout</button>
     </form>

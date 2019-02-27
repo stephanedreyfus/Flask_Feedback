@@ -80,10 +80,13 @@ def show_user_details_page(username):
     redirect everyone else. """
     cur_user = session.get('username')
     user = User.query.filter_by(username=cur_user).first()
+    feedback = user.feedback
 
     if user:
 
-        return render_template('user_details.html', user=user)
+        return render_template('user_details.html',
+                               user=user,
+                               feedback=feedback)
 
     else:
         flash('You must be logged in to see user details!')
@@ -92,8 +95,14 @@ def show_user_details_page(username):
 
 @app.route('/logout')
 def log_out():
-    """ Handle user logging out, clearing session and redirecting back to '/login'"""
+    """ Handle user logging out, clearing session
+    and redirecting back to '/login'"""
 
     session.pop("username")
 
     return redirect("/login")
+
+
+################################################################
+# Routes for feedback
+
