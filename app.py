@@ -1,4 +1,4 @@
-from flask import Flask, render_template, session, redirect
+from flask import Flask, render_template, session, redirect, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from forms import RegisterForm, LoginForm
 from models import db, connect_db, User
@@ -71,5 +71,18 @@ def user_login():
         else:
             form.username.errors = ['Incorrect username/password']
 
+    return render_template("login.html", form=form)
+
+
+@app.route('/secret')
+def show_secret():
+
+    cur_user = session['username']
+
+    if User.query.filter_by(username=cur_user).first():
+
+        return render_template('secret.html')
+
     else:
-        return render_template("login.html", form=form)
+        flash('You must be logged in to see secrets!')
+        redirect('/')
