@@ -48,7 +48,7 @@ def show_or_submit_register_form():
         db.session.add(user)
         db.session.commit()
 
-        return redirect('/secret')
+        return redirect('/users/<username>')
 
     else:
         return render_template('register.html', form=form)
@@ -67,25 +67,26 @@ def user_login():
 
         if user:
             session['username'] = user.username
-            return redirect('/secret')
+            return redirect('/users/<username>')
         else:
             form.username.errors = ['Incorrect username/password']
 
     return render_template("login.html", form=form)
 
 
-@app.route('/secret')
-def show_secret():
+@app.route('/users/<username>')
+def show_user_details_page(username):
     """ Handle displaying secret page only for logged in users,
     redirect everyone else. """
     cur_user = session.get('username')
+    user = User.query.filter_by(username=cur_user).first()
 
-    if User.query.filter_by(username=cur_user).first():
+    if user:
 
-        return render_template('secret.html')
+        return render_template('user_details.html', user=user)
 
     else:
-        flash('You must be logged in to see secrets!')
+        flash('You must be logged in to see user details!')
         return redirect('/')
 
 
