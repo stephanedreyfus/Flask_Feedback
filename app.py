@@ -78,6 +78,7 @@ def user_login():
 def show_user_details_page(username):
     """ Handle displaying secret page only for logged in users,
     redirect everyone else. """
+
     cur_user = session.get('username')
     user = User.query.filter_by(username=cur_user).first()
     feedback = user.feedback
@@ -91,6 +92,16 @@ def show_user_details_page(username):
     else:
         flash('You must be logged in to see user details!')
         return redirect('/')
+
+
+@app.route('users/<username>/delete', methods=['POST'])
+def delete_user(usernams):
+    """ Deletes user and all associated feeedback
+    from the database. """
+
+# Initiate cascade
+
+    return redirect('/')
 
 
 @app.route('/logout')

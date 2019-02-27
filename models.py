@@ -18,6 +18,10 @@ class User(db.Model):
 
     __tablename__ = "users"
 
+    feedback = db.relationship('Feedback',
+                               cascade='all, save-update, merge, delete',
+                               backref='user')
+
     username = db.Column(db.String(20),
                          primary_key=True,
                          unique=True,)
@@ -61,8 +65,6 @@ class Feedback(db.Model):
     ''' Creates feedback table, foreign key of username. '''
 
     __tablename__ = "feedbacks"
-
-    users = db.relationship('User', backref='feedback')
 
     id = db.Column(db.Integer, primary_key=True,
                    autoincrement=True)
