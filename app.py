@@ -56,7 +56,7 @@ def show_or_submit_register_form():
 
 @app.route('/login', methods=['GET', 'POST'])
 def user_login():
-
+    """ Handle displaying and submitting login form """
     form = LoginForm()
 
     if form.validate_on_submit():
@@ -76,8 +76,9 @@ def user_login():
 
 @app.route('/secret')
 def show_secret():
-
-    cur_user = session['username']
+    """ Handle displaying secret page only for logged in users,
+    redirect everyone else. """
+    cur_user = session.get('username')
 
     if User.query.filter_by(username=cur_user).first():
 
@@ -85,4 +86,13 @@ def show_secret():
 
     else:
         flash('You must be logged in to see secrets!')
-        redirect('/')
+        return redirect('/')
+
+
+@app.route('/logout')
+def log_out():
+    """ Handle user logging out, clearing session and redirecting back to '/login'"""
+
+    session.pop("username")
+
+    return redirect("/login")
